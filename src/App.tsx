@@ -1,5 +1,5 @@
 import "./App.css";
-import ExchangeRates from "./ExchangeRates";
+import ExchangeRates from "./pages/ExchangeRates/ExchangeRates";
 
 function App() {
   return (

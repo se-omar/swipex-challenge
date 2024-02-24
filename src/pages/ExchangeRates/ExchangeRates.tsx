@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import data from "../../fakeData.json";
 import Pagination from "../../components/Pagination/Pagination";
 import RatesTable from "../../components/RatesTable/RatesTable";
 import DatePicker from "../../components/DatePicker/DatePicker";
 import { Rate } from "../../models/Rate";
+import useSWR from "swr";
+import axios from "axios";
 
 const ExchangeRates = () => {
   const [rates, setRates] = useState<Rate[]>([]);
@@ -25,43 +26,54 @@ const ExchangeRates = () => {
   //   setRates(dailyRates);
   // };
 
-  const fetchApiRates = () => {
-    fetch(
-      `http://api.exchangerate.host/timeframe?access_key=e75f204dd4baff158bf80a3835c6f4c5&currencies=EGP,CAD&start_date=${startDate}&end_date=${endDate}`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const dailyRates = Object.keys(data.quotes).map((date) => ({
-          date: date,
-          source: data.source,
-          EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
-          CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
-        }));
-        setRates(dailyRates);
-      });
+  const fetchRates = async (startDate: string, endDate: string) => {
+    const res = await axios.get(
+      `http://api.exchangerate.host/timeframe?access_key=${
+        import.meta.env.VITE_ACCESS_TOKEN
+      }&currencies=EGP,CAD&start_date=${startDate}&end_date=${endDate}`,
+    );
+
+    const data = res.data;
+
+    const dailyRates = Object.keys(data.quotes).map((date) => ({
+      date: date,
+      source: data.source,
+      EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
+      CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
+    }));
+    setRates(dailyRates);
+    console.log(res.data);
+
+    // fetch(
+    //   `http://api.exchangerate.host/timeframe?access_key=${
+    //     import.meta.env.ACCESS_TOKEN
+    //   }&currencies=EGP,CAD&start_date=${startDate}&end_date=${endDate}`,
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     const dailyRates = Object.keys(data.quotes).map((date) => ({
+    //       date: date,
+    //       source: data.source,
+    //       EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
+    //       CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
+    //     }));
+    //     setRates(dailyRates);
+    //   });
   };
 
   useEffect(() => {
-    fetchRates();
+    // fetchRates();
   }, []);
 
   return (
     <div>
-      <DatePicker submit={fetchApiRates} />
-
-      <div className="w-auto xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-6">
-        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-xl rounded border-gray-700">
-          <div className="block w-full overflow-x-auto">
-            <RatesTable currentRates={currentRates} />
-          </div>
-        </div>
-
-        <Pagination
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
-          currentPage={currentPage}
-        />
-      </div>
+      <DatePicker submit={fetchRates} />
+      <RatesTable currentRates={currentRates} />
+      <Pagination
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
     </div>
   );
 };

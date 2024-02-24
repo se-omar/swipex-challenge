@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 type Props = {
-  submit: () => void;
+  submit: (startDate: string, endDate: string) => void;
 };
 
 const DatePicker = ({ submit }: Props) => {
@@ -24,7 +24,7 @@ const DatePicker = ({ submit }: Props) => {
       />
       <button
         className="bg-[#0021CC] hover:bg-[#021AA2]/90 text-white font-bold py-1 px-4 rounded"
-        onClick={submit}
+        onClick={() => submit(startDate, endDate)}
       >
         Search
       </button>
