@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import RatesTable from "../../components/RatesTable/RatesTable";
 import DatePicker from "../../components/DatePicker/DatePicker";
 import { Rate } from "../../models/Rate";
-import useSWR from "swr";
 import axios from "axios";
 
 const ExchangeRates = () => {
@@ -15,16 +14,6 @@ const ExchangeRates = () => {
   const endItemIdx = startItemIdx - pageSize;
   const currentRates = rates.slice(endItemIdx, startItemIdx);
   const totalPages = Math.ceil(rates.length / pageSize);
-
-  // const fetchRates = () => {
-  //   const dailyRates: Rate[] = Object.keys(data.quotes).map((date) => ({
-  //     date: date,
-  //     source: data.source,
-  //     EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
-  //     CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
-  //   }));
-  //   setRates(dailyRates);
-  // };
 
   const fetchRates = async (startDate: string, endDate: string) => {
     const res = await axios.get(
@@ -42,28 +31,7 @@ const ExchangeRates = () => {
       CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
     }));
     setRates(dailyRates);
-    console.log(res.data);
-
-    // fetch(
-    //   `http://api.exchangerate.host/timeframe?access_key=${
-    //     import.meta.env.ACCESS_TOKEN
-    //   }&currencies=EGP,CAD&start_date=${startDate}&end_date=${endDate}`,
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     const dailyRates = Object.keys(data.quotes).map((date) => ({
-    //       date: date,
-    //       source: data.source,
-    //       EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
-    //       CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
-    //     }));
-    //     setRates(dailyRates);
-    //   });
   };
-
-  useEffect(() => {
-    // fetchRates();
-  }, []);
 
   return (
     <div>
