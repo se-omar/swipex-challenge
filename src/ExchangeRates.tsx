@@ -62,106 +62,104 @@ const ExchangeRates = () => {
   }, []);
 
   return (
-    <>
-      <div className="">
+    <div>
+      <div className="text-white">
         <input
           type="date"
-          className="px-2 py-1 border rounded mr-2"
+          className="px-2 py-1 border rounded mr-2 bg-gray-700 border-gray-600 text-white"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
         <input
           type="date"
-          className="px-2 py-1 border rounded mr-2"
+          className="px-2 py-1 border rounded mr-2 bg-gray-700 border-gray-600 text-white"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+          className="bg-[#0021CC] hover:bg-[#021AA2]/90 text-white font-bold py-1 px-4 rounded"
           onClick={fetchApiRates}
         >
           Search
         </button>
       </div>
 
-      <section className="py-1 bg-blueGray-50">
-        <div className="w-auto xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-6">
-          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
-            <div className="block w-full overflow-x-auto">
-              <table className="items-center bg-transparent w-full border-collapse ">
-                <thead style={{ backgroundColor: "#F8FAFC" }}>
-                  <tr>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Date
+      <div className="w-auto xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-6">
+        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-xl rounded border-gray-700">
+          <div className="block w-full overflow-x-auto">
+            <table className="items-center w-full border-collapse text-white">
+              <thead className="bg-gray-700">
+                <tr>
+                  <th className="px-6 py-3 text-xs font-semibold text-left uppercase">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-xs font-semibold uppercase">
+                    EGP
+                  </th>
+                  <th className="px-6 py-3 text-xs font-semibold uppercase">
+                    CAD
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="bg-gray-800">
+                {currentRates.map((rate) => (
+                  <tr key={rate.date}>
+                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                      {rate.date}
                     </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold ">
-                      EGP
-                    </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold ">
-                      CAD
-                    </th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {rate.EGP}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {rate.CAD}
+                    </td>
                   </tr>
-                </thead>
-
-                <tbody>
-                  {currentRates.map((rate) => (
-                    <tr key={rate.date}>
-                      <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
-                        {rate.date}
-                      </th>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                        {rate.EGP}
-                      </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                        {rate.CAD}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <div className="flex justify-between mt-4">
-                <button
-                  onClick={previousPage}
-                  className={`py-2 px-4 rounded ${
-                    currentPage === 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : "bg-blue-500 text-white"
-                  }`}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
-                {Array.from(Array(totalPages), (_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => changePage(index + 1)}
-                    className={`py-2 px-4 rounded ${
-                      index + 1 === currentPage
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white"
-                    }`}
-                  >
-                    {index + 1}
-                  </button>
                 ))}
-                <button
-                  onClick={nextPage}
-                  className={`py-2 px-4 rounded ${
-                    currentPage === totalPages
-                      ? "opacity-50 cursor-not-allowed"
-                      : "bg-blue-500 text-white"
-                  }`}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+              </tbody>
+            </table>
           </div>
         </div>
-      </section>
-    </>
+
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={previousPage}
+            className={`py-2 px-4 rounded text-white ${
+              currentPage === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "bg-[#0021CC] hover:bg-[#021AA2]/90"
+            }`}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          {Array.from(Array(totalPages), (_, index) => (
+            <button
+              key={index}
+              onClick={() => changePage(index + 1)}
+              className={`py-2 px-4 rounded text-white ${
+                index + 1 === currentPage
+                  ? "bg-[#021AA2]/90"
+                  : "bg-[#0021CC] hover:bg-[#021AA2]/90"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={nextPage}
+            className={`py-2 px-4 rounded text-white ${
+              currentPage === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "bg-[#0021CC] hover:bg-[#021AA2]/90"
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 tr:nth-child(even) {
-  background-color: #F8FAFC;
+  background-color: #111B2B;
+}
+
+body {
+	background-color: #101726;
 }
