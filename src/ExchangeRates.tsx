@@ -18,6 +18,7 @@ const ExchangeRates = () => {
   const fetchRates = () => {
     const dailyRates: Rate[] = Object.keys(data.quotes).map((date) => ({
       date: date,
+      source: data.source,
       EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
       CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
     }));
@@ -32,6 +33,7 @@ const ExchangeRates = () => {
       .then((data) => {
         const dailyRates = Object.keys(data.quotes).map((date) => ({
           date: date,
+          source: data.source,
           EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
           CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
         }));
