@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import data from "./fakeData.json";
-import DatePicker from "./components/DatePicker/DatePicker";
-import Pagination from "./components/Pagination/Pagination";
-import RatesTable from "./components/RatesTable/RatesTable";
-import { Rate } from "./models/Rate";
+import data from "../../fakeData.json";
+import Pagination from "../../components/Pagination/Pagination";
+import RatesTable from "../../components/RatesTable/RatesTable";
+import DatePicker from "../../components/DatePicker/DatePicker";
+import { Rate } from "../../models/Rate";
 
 const ExchangeRates = () => {
   const [rates, setRates] = useState<Rate[]>([]);
@@ -15,15 +15,15 @@ const ExchangeRates = () => {
   const currentRates = rates.slice(endItemIdx, startItemIdx);
   const totalPages = Math.ceil(rates.length / pageSize);
 
-  const fetchRates = () => {
-    const dailyRates: Rate[] = Object.keys(data.quotes).map((date) => ({
-      date: date,
-      source: data.source,
-      EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
-      CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
-    }));
-    setRates(dailyRates);
-  };
+  // const fetchRates = () => {
+  //   const dailyRates: Rate[] = Object.keys(data.quotes).map((date) => ({
+  //     date: date,
+  //     source: data.source,
+  //     EGP: Math.round(data.quotes[date].USDEGP * 100) / 100,
+  //     CAD: Math.round(data.quotes[date].USDCAD * 100) / 100,
+  //   }));
+  //   setRates(dailyRates);
+  // };
 
   const fetchApiRates = () => {
     fetch(
